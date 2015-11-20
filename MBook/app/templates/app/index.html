@@ -1,0 +1,57 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+function showHint(str,mode)
+{
+    var xmlhttp;
+    if (str.length == 0) {
+        document.getElementById("txtHint").innerHTML = "";
+        return;
+    }
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {// code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+        }
+    }
+    if (mode == "AuthorName")
+        xmlhttp.open("GET", "/search.asp?q=" + str, true);
+    else
+        xmlhttp.open("GET", "/searchau.asp?q=" + str, true);
+    xmlhttp.send();
+}
+function showNewWindow() {
+    window.open('/addbook.asp', '', 'height=500, width=400, top=100,left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no,status=no');
+}
+function showNewWindow1(str) {
+    window.open('/addbook.asp/?q=' + str, '', 'height=500, width=400, top=100,left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no,status=no');
+}
+function showNewWindow2(str) {
+    window.open('/deletebook/?q=' + str, '', 'height=500, width=400, top=100,left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no,status=no');
+}
+</script>
+
+<div class="jumbotron">
+    <h1>Magic Book</h1>
+    <p class="lead">A book sharing platform.</p>
+    <form action="">
+        <select id="sel">
+            <option value="BookTitle">AuthorName</option>
+            <option value="AuthorName">BookTitle</option>
+        </select>
+        <input type="text" id="txt1" name="q" onkeyup="showHint(this.value,sel.value)" />
+        <input type="button" value="Add Book"  onclick="showNewWindow()">
+    </form>
+</div>
+
+<div  id="txtHint">
+</div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">
+        function closewindow() {
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        }
+    </script>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div class="jumbotron">
+    {% if found %}
+        This Author is exist.
+    {% else %}
+        This Author is not exist.
+    {% endif %}
+    <form action="/addauthor.asp/?q={{seaid}}" method="post" target="_self">{% csrf_token %}
+        <p>Name: <input type="text" name="Name" value="{{Name}}"></p>
+        <p>Age: <input type="text" name="Age" value="{{Age}}"></p>
+        <p>Country: <input type="text" name="Country" value="{{Country}}"></p>
+        {% if saved %}
+            <input type="submit" value="Save Author">
+        {% else %}
+            <input type="button" value="关闭" name="name" onclick="closewindow()"/>
+        {% endif %}
+    </form>
+    </div>
+</body>
+</html>

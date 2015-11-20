@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script type="text/javascript">  
+        function closewindow() {
+            window.opener=null;  
+            window.open('','_self');  
+            window.close();  
+        }
+        function showHint(str) {
+            var xmlhttp;
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            }
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/addauthor.asp?q=" + str, true);
+            xmlhttp.send();
+        }
+    </script> 
+</head>
+<body>
+    <div class="jumbotron">
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        你可以继续添加或者
+        <input type="button" value="关闭" name="name" onclick="closewindow()"/>
+    {% endif %}
+    <form action="" method="post">{% csrf_token %}
+        <p>ISBN: <input type="text" name="ISBN" value="{{ISBN}}"></p>
+        <p>Title: <input type="text" name="Title" value="{{Title}}"></p>
+        <p>Publisher: <input type="text" name="Publisher" value="{{Publisher}}"></p>
+        <p>PublishDate: <input type="text" name="PublishDate" value="{{PublishDate|date:'Y-m-d'}}"></p>
+        <p>Price: <input type="text" name="Price" value="{{Price}}"></p>
+        <p>AuthorID: <input type="text" name="AuthorID" id="q" onkeyup="showHint(this.value)" value="{{AuthorID}}"></p>
+        <input type="submit" value="Save Book">
+    </form>
+        <div  id="txtHint"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+        function showNewWindow1(str) {
+            window.open('/addbook.asp/?q=' + str, '', 'height=500, width=400, top=100,left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no,status=no');
+        }
+        function showNewWindow2(str) {
+            window.open('/deletebook/?q=' + str, '', 'height=500, width=400, top=100,left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no,status=no');
+        }
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+{% if books %}
+    <p>Found {{ books|length }} book{{ books|pluralize }}.</p>
+    <ul>
+        {% for book in books %}
+        <li>ISBN:{{ book.ISBN }}&nbspTitle:{{book.Title}}&nbspTitle:{{book.Title}}&nbspPublisher:{{book.Publisher}}
+            &nbspPublishDate:{{book.PublishDate}}&nbspPrice:{{book.Price}}
+            <input type="button" value="Edit"  onclick="showNewWindow1(&quot;{{book.ISBN}}&quot)"/>
+            <input type="button" value="Delete"  onclick="showNewWindow2(&quot;{{book.ISBN}}&quot)"/>
+            <br>
+            AuthorID:{{book.AuthorID.AuthorID}}&nbspAuthorName:{{book.AuthorID.Name}}&nbspAge:{{book.AuthorID.Age}}
+            &nbspCountry:{{book.AuthorID.Country}}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No authors matched your search criteria.</p>
+{% endif %}
+</div>
+</body>
